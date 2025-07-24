@@ -11,7 +11,7 @@ stackAlert è un semplice plugin che consente di mostrare messaggi di notifica i
 - ✅ Compatibile con **jQuery 3+** e **Bootstrap 5**
 - ✅ Include automaticamente gli **stili CSS "pro"** al primo utilizzo
 - ✅ Supporta **Font Awesome** per icone visive
-- ✅ Posizionamento configurabile: `top-right`, `bottom-right`, `top-left`, `bottom-left`
+- ✅ Posizionamento configurabile: `top-right`, `bottom-right`, `top-left`, `bottom-left`, `top-center`, `bottom-center`
 - ✅ Chiusura automatica configurabile, oppure solo manuale
 - ✅ Stack verticale degli alert (non sovrapposti)
 - ✅ Design responsive e leggero
@@ -34,7 +34,7 @@ Assicurati di includere jQuery, Bootstrap 5 e Font Awesome prima del plugin:
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- stackAlert Plugin -->
-<script src="https://cdn.jsdelivr.net/gh/FVLogika/stackAlert/stackAlert.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/FVLogika/stackAlert/stackAlert.min.js"></script>
 ```
 
 ---
@@ -43,13 +43,13 @@ Assicurati di includere jQuery, Bootstrap 5 e Font Awesome prima del plugin:
 
 ```javascript
 $.fn.stackAlert({
-  message: '✅ Operazione completata con successo!',
+  message: 'Operazione completata con successo!',
   type: 'success',
   timeout: 4000,
   position: 'top-right'
 });
 // oppure
-$.fn.stackAlert('✅ Operazione completata con successo!', 'success', 4000, 'top-right');
+$.fn.stackAlert('Operazione completata con successo!', 'success', 4000, 'top-right');
 ```
 
 ---
@@ -58,25 +58,29 @@ $.fn.stackAlert('✅ Operazione completata con successo!', 'success', 4000, 'top
 
 ```javascript
 $.fn.stackAlert({
-  message: '⚠️ Errore irreversibile!',
+  message: 'Errore irreversibile!',
   type: 'danger',
-  timeout: 0,
+  timeout: 0, // senza chiusura a tempo
   position: 'bottom-left'
 });
 // oppure
-$.fn.stackAlert('⚠️ Errore irreversibile!', 'danger', 0, 'bottom-left');
+$.fn.stackAlert('Errore irreversibile!', 'danger', 0, 'bottom-left');
 ```
 
 ---
 
 ## 🎨 Tipologie supportate
 
-| Tipo     | Colore     | Icona Font Awesome           |
-|----------|------------|------------------------------|
-| `info`   | blu        | `fa-circle-info`             |
-| `success`| verde      | `fa-circle-check`            |
-| `warning`| arancione  | `fa-triangle-exclamation`    |
-| `danger` | rosso      | `fa-circle-exclamation`      |
+| Tipo        | Colore     | Icona Font Awesome        |
+|-------------|------------|---------------------------|
+| `info`      | blu chiaro | `fa-circle-info`          |
+| `success`   | verde      | `fa-circle-check`         |
+| `warning`   | arancione  | `fa-triangle-exclamation` |
+| `danger`    | rosso      | `fa-circle-exclamation`   |
+| `primary`   | blu        | `fa-star`                 |
+| `secondary` | grigio     | `fa-circle`               |
+| `light`     | gr chiaro  | `fa-sun`                  |
+| `dark`      | gr scuro   | `fa-moon`                 |
 
 ---
 
@@ -84,7 +88,7 @@ $.fn.stackAlert('⚠️ Errore irreversibile!', 'danger', 0, 'bottom-left');
 
 Tutto il codice è contenuto in un solo file JavaScript (`stackAlert.js`) che:
 
-- Inietta lo stile automaticamente nel `<head>` della pagina
+- Se necessario inietta lo stile automaticamente nel `<head>` della pagina
 - Gestisce la creazione del contenitore e degli alert
 - Applica le animazioni, le icone e il comportamento di chiusura
 - È completamente standalone e non richiede dipendenze esterne oltre a jQuery, Bootstrap e Font Awesome
@@ -145,13 +149,12 @@ $.fn.stackAlert('Notifica in basso a destra', 'info', 5000, 'bottom-right');
 
 ## 📄 Licenza
 
-Questo progetto è open-source e liberamente utilizzabile. Modifiche e fork sono benvenuti! 🔓
+Questo progetto è open-source e liberamente utilizzabile.
 
 ---
 
 ## 🛠 Autore
 
 Creato con cura da **[FVLogika](https://github.com/FVLogika)**  
-💬 Hai suggerimenti o vuoi contribuire? Apri un issue su GitHub!
 
 ---
