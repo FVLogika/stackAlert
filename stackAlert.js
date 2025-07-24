@@ -1,5 +1,14 @@
+/*!
+ * stackAlert.js
+ * Plugin jQuery per creare alert impilati animati, stile Bootstrap
+ * Creato da FVLogika
+ */
+
 (function ($) {
-	// 🔍 Verifica se una classe CSS esiste nei fogli di stile caricati
+	/**
+	 * Verifica se una determinata classe CSS è già presente in qualche foglio di stile.
+	 * Questo evita che il plugin inietti stili duplicati.
+	 */
 	function cssClassExists(selector) {
 		for (const sheet of document.styleSheets) {
 			try {
@@ -8,13 +17,17 @@
 					if (rule.selectorText === selector) return true;
 				}
 			} catch {
+				// Ignora fogli esterni con restrizioni CORS (es. Bootstrap CDN)
 				continue;
 			}
 		}
 		return false;
 	}
 
-	// 🎨 Inietta il CSS una sola volta
+	/**
+	 * Inietta il CSS necessario per gli alert impilati, solo se non già presente.
+	 * Include animazione nativa via `opacity` e `transform`, senza @keyframes.
+	 */
 	function injectStyles() {
 		if ($('#stackAlertStyles').length || cssClassExists('.alert-pro')) return;
 
@@ -39,32 +52,40 @@
 		}).appendTo('head');
 	}
 
-	// 🔔 Plugin principale
+	/**
+	 * Metodo principale: genera un alert impilato visibile sullo schermo.
+	 * Supporta configurazione tramite oggetto o via shorthand con 1-4 parametri.
+	 */
 	$.fn.stackAlert = function () {
+		// Inietta gli stili alla prima chiamata
 		injectStyles();
 
 		const defaults = {
-			message:	'Alert generico',
-			type:		'secondary',
-			timeout:	5000,
-			position:	'top-right'
+			message:	'Alert generico',	// Testo dell’alert
+			type:		'secondary',		// Tipo (Bootstrap): info, success, danger, etc.
+			timeout:	5000,			// Durata (ms) prima della chiusura automatica
+			position:	'top-right'		// Posizione sullo schermo
 		};
 
 		let settings;
 
-		// 📦 Supporta shorthand o oggetto
+		// Supporto shorthand es: stackAlert("Messaggio", "danger", 3000, "bottom-left")
 		if (typeof arguments[0] === 'string') {
 			settings = {
 				message:	arguments[0],
-				type:		arguments[1] ?? defaults.type,
+				type:		 arguments[1] ?? defaults.type,
 				timeout:	arguments[2] ?? defaults.timeout,
-				position:	arguments[3] ?? defaults.position
+				position: arguments[3] ?? defaults.position
 			};
 		} else {
+			// Configurazione via oggetto es: { message: "...", type: "...", ... }
 			settings = $.extend({}, defaults, arguments[0]);
 		}
 
-		// 🎭 Icone abbinate ai tipi di alert
+		/**
+		 * Mappa dei tipi con icone associate (Font Awesome).
+		 * Aggiunte anche primary, secondary, light e dark.
+		 */
 		const icons = {
 			info:		'fa-circle-info',
 			success:	'fa-circle-check',
@@ -76,21 +97,24 @@
 			dark:		'fa-moon'
 		};
 
-		const alertId		= 'alert-' + Date.now();
-		const containerId	= 'alert-stack-' + settings.position;
-		let $container		= $('#' + containerId);
+		// ID univoco per l’alert (usato per manipolazione DOM)
+		const alertId = 'alert-' + Date.now();
 
-		// 📍 Posizioni supportate
+		// ID del contenitore per questa posizione
+		const containerId = 'alert-stack-' + settings.position;
+		let $container = $('#' + containerId);
+
+		// Posizioni supportate con coordinate CSS
 		const positions = {
-			'top-right':		{ top: '20px', right: '20px' },
-			'bottom-right':		{ bottom: '20px', right: '20px' },
-			'top-left':			{ top: '20px', left: '20px' },
-			'bottom-left':		{ bottom: '20px', left: '20px' },
-			'top-center':		{ top: '20px', left: '50%', transform: 'translateX(-50%)' },
-			'bottom-center':	{ bottom: '20px', left: '50%', transform: 'translateX(-50%)' }
+			'top-right':	{ top: '20px', right: '20px' },
+			'bottom-right':	{ bottom: '20px', right: '20px' },
+			'top-left':	{ top: '20px', left: '20px' },
+			'bottom-left':	{ bottom: '20px', left: '20px' },
+			'top-center':	{ top: '20px', left: '50%', transform: 'translateX(-50%)' },
+			'bottom-center':{ bottom: '20px', left: '50%', transform: 'translateX(-50%)' }
 		};
 
-		// 🧱 Crea contenitore se non esiste
+		// Se il contenitore non esiste, lo crea
 		if (!$container.length) {
 			$container = $('<div>', {
 				id: containerId,
@@ -101,46 +125,52 @@
 				}, positions[settings.position])
 			}).appendTo('body');
 
+			// Centra il contenitore se necessario
 			if (positions[settings.position].transform) {
 				$container.css('transform', positions[settings.position].transform);
 			}
 		}
 
-		// 📦 HTML alert con Bootstrap + Font Awesome
+		// Costruisce l’HTML dell’alert
 		const alertHtml = `
 			<div id="${alertId}"
-					class="alert alert-${settings.type} alert-dismissible fade show alert-pro shadow"
-					role="alert"
-					style="margin-bottom: 10px;">
+					 class="alert alert-${settings.type} alert-dismissible fade show alert-pro shadow"
+					 role="alert"
+					 style="margin-bottom: 10px;">
 				<i class="fa-solid ${icons[settings.type] ?? icons['secondary']} me-2"></i>
 				${settings.message}
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Chiudi"></button>
 			</div>
 		`;
 
+		// Inserisce l’alert nel contenitore
 		$container.append(alertHtml);
 
-		// 🪄 Attiva animazione
+		// Attiva l’animazione (aggiunge classe .showing dopo breve delay)
 		setTimeout(() => {
 			$('#' + alertId).addClass('showing');
 		}, 50);
 
-		// ⏱️ Chiusura automatica
+		// Chiude automaticamente dopo timeout, se > 0
 		if (settings.timeout > 0) {
 			setTimeout(() => {
 				$('#' + alertId).alert('close');
 			}, settings.timeout);
 		}
 
-		return this;
+		return this; // Per supportare chaining jQuery
 	};
 
-	// 🧹 Metodo per rimuovere tutti gli alert
+	/**
+	 * Metodo statico: rimuove tutti gli alert impilati da qualsiasi posizione.
+	 */
 	$.fn.stackAlert.closeAll = function () {
 		$('[id^="alert-stack-"]').remove();
 	};
 
-	// 🔍 Rimuove solo quelli di una posizione
+	/**
+	 * Rimuove tutti gli alert di una posizione specifica (es. "top-left")
+	 */
 	$.fn.stackAlert.closePosition = function (position) {
 		$('#alert-stack-' + position).remove();
 	};
