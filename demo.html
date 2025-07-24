@@ -184,7 +184,25 @@
 	</footer>
 
 	<script>
-		// Aggiorna etichette del timeout dinamico
+		// 🌐 Selettori italiani
+		const msg					 = document.getElementById('msg');
+		const type					= document.getElementById('type');
+		const timeout			 = document.getElementById('timeout');
+		const timeout_label = document.getElementById('timeout-label');
+		const manualOnly		= document.getElementById('manualOnly');
+		const pos					 = document.getElementById('pos');
+		const useEmoji			= document.getElementById('useEmoji');
+
+		// 🌐 Selettori inglesi
+		const msg_en					 = document.getElementById('msg-en');
+		const type_en					= document.getElementById('type-en');
+		const timeout_en			 = document.getElementById('timeout-en');
+		const timeout_label_en = document.getElementById('timeout-label-en');
+		const manualOnly_en		= document.getElementById('manualOnly-en');
+		const pos_en					 = document.getElementById('pos-en');
+		const useEmoji_en			= document.getElementById('useEmoji-en');
+
+		// 🔁 Timeout slider live update
 		timeout.addEventListener('input', () => {
 			timeout_label.textContent = timeout.value;
 		});
@@ -192,52 +210,56 @@
 			timeout_label_en.textContent = timeout_en.value;
 		});
 
-		// Mostra alert italiano
+		// 🇮🇹 Mostra alert italiano
 		function showAlert() {
-			const message = msg.value || '✅ Nessun messaggio inserito';
-			const icon = useEmoji.checked ? '📢 ' : '';
+			const message		 = msg.value || '✅ Nessun messaggio inserito';
+			const icon				= useEmoji.checked ? '📢 ' : '';
 			const fullMessage = icon + message;
-			const timeoutVal = manualOnly.checked ? 0 : parseInt(timeout.value);
-			const position = pos.value;
-			const type = type.value;
+			const tmo				 = manualOnly.checked ? 0 : parseInt(timeout.value);
+			const position		= pos.value;
+			const typeVal		 = type.value;
 
-			$.fn.stackAlert(fullMessage, type, timeoutVal, position);
-			document.getElementById('code-preview').textContent =
-				`$.fn.stackAlert('${fullMessage}', '${type}', ${timeoutVal}, '${position}');`;
+			$.fn.stackAlert(fullMessage, typeVal, tmo, position);
+
+			const codeLine = `$.fn.stackAlert('${fullMessage}', '${typeVal}', ${tmo}, '${position}');`;
+			document.getElementById('code-preview').textContent = codeLine;
 		}
 
-		// Mostra alert inglese
+		// 🇬🇧 Mostra alert inglese
 		function showAlertEN() {
-			const message = msg_en.value || '✅ No message entered';
-			const icon = useEmoji_en.checked ? '📢 ' : '';
+			const message		 = msg_en.value || '✅ No message entered';
+			const icon				= useEmoji_en.checked ? '📢 ' : '';
 			const fullMessage = icon + message;
-			const timeoutVal = manualOnly_en.checked ? 0 : parseInt(timeout_en.value);
-			const position = pos_en.value;
-			const type = type_en.value;
+			const tmo				 = manualOnly_en.checked ? 0 : parseInt(timeout_en.value);
+			const position		= pos_en.value;
+			const typeVal		 = type_en.value;
 
-			$.fn.stackAlert(fullMessage, type, timeoutVal, position);
-			document.getElementById('code-preview-en').textContent =
-				`$.fn.stackAlert('${fullMessage}', '${type}', ${timeoutVal}, '${position}');`;
+			$.fn.stackAlert(fullMessage, typeVal, tmo, position);
+
+			const codeLine = `$.fn.stackAlert('${fullMessage}', '${typeVal}', ${tmo}, '${position}');`;
+			document.getElementById('code-preview-en').textContent = codeLine;
 		}
 
-		// Copia codice negli appunti IT
+		// 📋 Copia codice IT
 		function copyCode() {
-			navigator.clipboard.writeText(document.getElementById('code-preview').textContent);
-			$.fn.stackAlert('📋 Copiato negli appunti.', 'info', 2000, 'top-right');
+			const code = document.getElementById('code-preview').textContent;
+			navigator.clipboard.writeText(code);
+			$.fn.stackAlert('📋 Codice copiato negli appunti.', 'info', 2000, 'top-right');
 		}
 
-		// Copia codice EN
+		// 📋 Copia codice EN
 		function copyCodeEN() {
-			navigator.clipboard.writeText(document.getElementById('code-preview-en').textContent);
-			$.fn.stackAlert('📋 Copied to clipboard.', 'info', 2000, 'top-right');
+			const code = document.getElementById('code-preview-en').textContent;
+			navigator.clipboard.writeText(code);
+			$.fn.stackAlert('📋 Code copied to clipboard.', 'info', 2000, 'top-right');
 		}
 
-		// Chiude tutti gli alert (rimuove contenitori)
+		// 🧹 Rimuove tutti gli alert visibili
 		function closeAllAlerts() {
 			$('[id^="alert-stack-"]').remove();
 		}
 
-		// Switch lingua
+		// 🔀 Cambia lingua
 		function toggleLang() {
 			const it = document.getElementById("lang-it");
 			const en = document.getElementById("lang-en");
@@ -245,5 +267,6 @@
 			en.style.display = en.style.display === "none" ? "block" : "none";
 		}
 	</script>
+
 </body>
 </html>
