@@ -1,7 +1,6 @@
 /*!
  * stackAlert.js
  * Plugin jQuery per alert impilati "fixed" con Bootstrap 5 + Font Awesome
- * Creato da Flavio ✨
  */
 (function ($) {
   // 🧪 Funzione per iniettare lo stile "pro" se non è già presente
@@ -31,16 +30,32 @@
   }
 
   // 🧩 Plugin principale
-  $.fn.stackAlert = function (options) {
+  $.fn.stackAlert = function () {
     injectStyles(); // Inietta gli stili al primo utilizzo
 
     // ⚙️ Configurazioni con valori di default
-    const settings = $.extend({
+    const defaults = {
       message: 'Alert generico',
       type: 'info',        // Varianti: info, success, warning, danger
       timeout: 5000,       // Tempo in millisecondi (0 = solo chiusura manuale)
       position: 'top-right'// Posizioni: top-right, bottom-right, top-left, bottom-left
-    }, options);
+    };
+
+    let settings;
+
+    // Se il primo argomento è una stringa, uso lo shorthand a 1–4 parametri
+    if (typeof arguments[0] === 'string') {
+      settings = {
+        message: arguments[0],
+        type: (arguments.length > 1 ? arguments[1] : defaults.type),
+        timeout: (arguments.length > 2 ? arguments[2] : defaults.timeout),
+        position: (arguments.length > 3 ? arguments[3] : defaults.position)
+      };
+    }
+    else {
+      // Altrimenti mi aspetto un oggetto di opzioni
+      settings = $.extend({}, defaults, arguments[0]);
+    }
 
     // 🎨 Icone Font Awesome per ciascun tipo
     const icons = {
