@@ -96,7 +96,7 @@
 		<div class="form-section d-grid gap-2">
 			<button class="btn btn-primary" onclick="showAlert()">🔔 Mostra alert</button>
 			<button class="btn btn-secondary" onclick="copyCode()">📋 Copia il codice</button>
-			<button class="btn btn-danger" onclick="closeAllAlerts()">🧹 Chiudi tutti</button>
+			<button class="btn btn-danger" onclick="$.fn.stackAlert.closeAll()">🧹 Chiudi tutti</button>
 		</div>
 
 		<div class="form-section">
@@ -155,7 +155,7 @@
 		<div class="form-section d-grid gap-2">
 			<button class="btn btn-primary" onclick="showAlertEN()">🔔 Show alert</button>
 			<button class="btn btn-secondary" onclick="copyCodeEN()">📋 Copy code</button>
-			<button class="btn btn-danger" onclick="closeAllAlerts()">🧹 Close all</button>
+			<button class="btn btn-danger" onclick="$.fn.stackAlert.closeAll()">🧹 Close all</button>
 		</div>
 
 		<div class="form-section">
@@ -236,11 +236,6 @@
 			const code = document.getElementById('code-preview-en').textContent;
 			navigator.clipboard.writeText(code);
 			$.fn.stackAlert('📋 Code copied to clipboard.', 'info', 2000, 'top-right');
-		}
-
-		// 🧹 Rimuove tutti gli alert visibili
-		function closeAllAlerts() {
-			$('[id^="alert-stack-"]').remove();
 		}
 
 		// 🔀 Cambia lingua
