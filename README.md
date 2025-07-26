@@ -149,7 +149,7 @@ $.fn.stackAlert('Notifica in basso a destra', 'info', 5000, 'bottom-right');
 
 ## 📄 Licenza
 
-Questo progetto è open-source e liberamente utilizzabile.
+MIT - uso libero con attribuzione. Vedi LICENSE nel repository.
 
 ---
 
